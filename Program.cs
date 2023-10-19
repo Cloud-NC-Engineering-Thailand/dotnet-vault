@@ -17,7 +17,7 @@ var configurationBuilder = new ConfigurationBuilder()
 .AddEnvironmentVariables()
 .Build();
 
-builder.Services.Configure<DatabaseConfig>(configurationBuilder.GetSection(nameof(DatabaseConfig)));
+builder.Services.Configure<AppConfig>(configurationBuilder.GetSection(nameof(AppConfig)));
 builder.Services.AddSingleton<APIService>();
 
 var app = builder.Build();

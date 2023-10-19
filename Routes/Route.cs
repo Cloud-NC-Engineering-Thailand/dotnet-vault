@@ -6,7 +6,8 @@ namespace DotNetCoreWebAPI.Routes
     {
         public static void Setup(WebApplication app)
         {
-            app.MapGet("/", KubeOpsController.GetAsync);
+            app.MapPost("/encrypt", CloudNCController.PostEncryptAsync);
+            app.MapPost("/decrypt", CloudNCController.PostDecryptAsync);
         }
     }
 
