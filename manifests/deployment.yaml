@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dotnet-core-web-api
+  name: dotnet-core-web-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dotnet-core-web-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: dotnet-core-web-api
+    spec:
+      serviceAccountName: cloudnckv-user
+      containers:
+      - image: dmakeroam/webapp:1.0.1
+        name: dotnet-core-web-api
+        resources: {}
+        env: 
+        - name: ASPNETCORE_URLS
+          value: "http://*:8090"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: username
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: username
+        - name: password
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: password
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8090
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8090
+            scheme: HTTP    
+          initialDelaySeconds: 10
+          periodSeconds: 10      
+        ports:
+        - containerPort: 8090
+        volumeMounts:
+        - name: appvolume
+          mountPath: "/app/appsettings.Production.json"
+          subPath: "appsettings.Production.json"
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+        imagePullPolicy: Always
+      volumes:
+        - name: appvolume
+          configMap:
+            name: appsettings
+        - name: secrets-store-inline
+          csi:
+           driver: secrets-store.csi.k8s.io
+           readOnly: true
+           volumeAttributes:
+              secretProviderClass: cloudnckv-provider
+status: {}
