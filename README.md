@@ -1,4 +1,4 @@
-# DotNetCoreWebAPI
+# DotNetWebAPI - HCP Vault Integration (POC)
 
 This repository contains a .NET web API project that provides encryption and decryption services using HashiCorp's Vault. It integrates with the Transit secrets engine of Vault to perform encryption and decryption operations.
 
