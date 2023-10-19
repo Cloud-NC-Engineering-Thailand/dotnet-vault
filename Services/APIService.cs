@@ -15,11 +15,15 @@ namespace DotNetCoreWebAPI.Services
     {
 
         private readonly AppConfig _appConfig;
-        private readonly IVaultClient _vaultClient;
+        private IVaultClient _vaultClient;
 
         public APIService(IOptions<AppConfig> appConfig)
         {
             _appConfig = appConfig.Value;
+        }
+
+        public void AuthenVoid()
+        {
             IAuthMethodInfo authMethod = new AppRoleAuthMethodInfo(_appConfig.APPROLE_ROLE_ID, _appConfig.APPROLE_SECRET_ID);
             var vaultClientSettings = new VaultClientSettings(_appConfig.VAULT_ADDR, authMethod)
             {
@@ -30,11 +34,11 @@ namespace DotNetCoreWebAPI.Services
 
         public async Task<string> EncryptText(AppRequest appRequest)
         {
+            AuthenVoid();
             var keyName = _appConfig.KEY_NAME;
-            var context = "currentContext1";
             var plainText = appRequest.PLAINTEXT;
             var encodedPlainText = Convert.ToBase64String(Encoding.UTF8.GetBytes(plainText));
-            var encodedContext = Convert.ToBase64String(Encoding.UTF8.GetBytes(context));
+            var encodedContext = Convert.ToBase64String(Encoding.UTF8.GetBytes("currentContext"));
 
             var encryptOptions = new EncryptRequestOptions
             {
@@ -49,9 +53,9 @@ namespace DotNetCoreWebAPI.Services
 
         public async Task<string> DecryptText(AppRequest appRequest)
         {
+            AuthenVoid();
             var keyName = _appConfig.KEY_NAME;
-            var context = "currentContext1";
-            var encodedContext = Convert.ToBase64String(Encoding.UTF8.GetBytes(context));
+            var encodedContext = Convert.ToBase64String(Encoding.UTF8.GetBytes("currentContext"));
 
             var decryptOptions = new DecryptRequestOptions
             {

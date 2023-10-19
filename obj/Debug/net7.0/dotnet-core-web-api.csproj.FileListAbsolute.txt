@@ -1,5 +1,4 @@
 /Users/oamsan/dotnet-vault/bin/Debug/net7.0/appsettings.Development.json
-/Users/oamsan/dotnet-vault/bin/Debug/net7.0/configs/prod/appsettings.Production.json
 /Users/oamsan/dotnet-vault/bin/Debug/net7.0/dotnet-core-web-api
 /Users/oamsan/dotnet-vault/bin/Debug/net7.0/dotnet-core-web-api.deps.json
 /Users/oamsan/dotnet-vault/bin/Debug/net7.0/dotnet-core-web-api.runtimeconfig.json
