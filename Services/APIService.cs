@@ -22,7 +22,7 @@ namespace DotNetCoreWebAPI.Services
             _appConfig = appConfig.Value;
         }
 
-        public void AuthenVoid()
+        public void AuthenVault()
         {
             IAuthMethodInfo authMethod = new AppRoleAuthMethodInfo(_appConfig.APPROLE_ROLE_ID, _appConfig.APPROLE_SECRET_ID);
             var vaultClientSettings = new VaultClientSettings(_appConfig.VAULT_ADDR, authMethod)
@@ -34,7 +34,7 @@ namespace DotNetCoreWebAPI.Services
 
         public async Task<string> EncryptText(AppRequest appRequest)
         {
-            AuthenVoid();
+            AuthenVault();
             var keyName = _appConfig.KEY_NAME;
             var plainText = appRequest.PLAINTEXT;
             var encodedPlainText = Convert.ToBase64String(Encoding.UTF8.GetBytes(plainText));
@@ -53,7 +53,7 @@ namespace DotNetCoreWebAPI.Services
 
         public async Task<string> DecryptText(AppRequest appRequest)
         {
-            AuthenVoid();
+            AuthenVault();
             var keyName = _appConfig.KEY_NAME;
             var encodedContext = Convert.ToBase64String(Encoding.UTF8.GetBytes("currentContext"));
 
